@@ -13,7 +13,7 @@ public class DemoApplication {
 	
 	public static String callIng() {
 		
-		return "home";
+		return "home home";
 	}
 	
 
