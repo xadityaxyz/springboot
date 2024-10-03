@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    environment {
+        MYSQL_USER = credentials('mysqlup') 
+        MYSQL_PASSWORD = credentials('mysqlup')
+    }
 
     stages {
         stage('code') {
