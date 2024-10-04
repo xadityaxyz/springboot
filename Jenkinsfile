@@ -19,7 +19,7 @@ pipeline {
                 echo "stop and delete docker container and images"
                 sh 'docker stop $(docker ps -a -q)'
                 sh 'docker rm $(docker ps -a -q)' 
-                sh 'docker rmi $(docker images -q)' 
+                sh 'docker rmi $(docker images -q) -f' 
             }
         }
         stage('build') {
