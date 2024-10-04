@@ -11,7 +11,7 @@ public class Rescontrooller {
 	@GetMapping("/home")
 	public String callingHome() {
 		
-		return "time time";
+		return "done for the day";
 	}
 	
 
