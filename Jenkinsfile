@@ -1,45 +1,48 @@
 pipeline {
     agent any
     environment {
-        MYSQL_USER = credentials('mysqlup') 
-        MYSQL_PASSWORD = credentials('mysqlup')
+        MYSQL_USER = credentials('mysqlup')  // Fetches the username from Jenkins credentials
+        MYSQL_PASSWORD = credentials('mysqlup')  // Fetches the password from Jenkins credentials
     }
 
     stages {
-        stage('code') {
+        stage('Code') {
             steps {
-                echo "cloning the code"
-                git url:"https://github.com/xadityaxyz/springboot.git", branch: "master"
+                echo "Cloning the code"
+                git url: "https://github.com/xadityaxyz/springboot.git", branch: "master"
             }
         }
 
-        stage('delete images and containers') {
+        stage('Delete Images and Containers') {
             steps {
-               
-                echo "stop and delete docker container and images"
-                sh 'docker stop $(docker ps -a -q)'
-                sh 'docker rm $(docker ps -a -q)' 
-                sh 'docker rmi $(docker images -q) -f' 
+                echo "Stopping and deleting Docker containers and images"
+                sh 'docker stop $(docker ps -a -q) || true'
+                sh 'docker rm $(docker ps -a -q) || true' 
+                sh 'docker rmi $(docker images -q) -f || true' 
             }
         }
-        stage('build') {
+
+        stage('Build') {
             steps {
-               
-                echo "deployment stage"
+                echo "Building the Docker image"
                 sh 'docker build -t sprint_project-app .'
-
             }
         }
-        stage('deploy') {
+
+        stage('Deploy') {
             steps {
-                echo "deploying the docker image to the container"
-                 sh 'docker-compose down'
-                 sh 'docker-compose up -d'
+                echo "Deploying the Docker image to the container"
+                sh 'docker-compose down || true'
+                sh 'docker-compose up -d'
             }
         }
     }
 
     post {
+        always {
+            echo "MySQL User: ${MYSQL_USER}"  // Print username for debugging
+            echo "MySQL Password: ${MYSQL_PASSWORD}"  // Print password for debugging (use with caution)
+        }
         success {
             echo 'Build and Deployment Successful!'
         }
