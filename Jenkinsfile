@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         MYSQL_USER = credentials('mysqlup')  // Fetches the username from Jenkins credentials
-        MYSQL_PASSWORD = credentials('mysqlup')  // Fetches the password from Jenkins credentials
+        MYSQL_PASSWORD = credentials('mysqlup')  // Fetches the password from Jenkins 
     }
 
     stages {
